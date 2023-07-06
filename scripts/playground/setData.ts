@@ -1,8 +1,5 @@
 import hre, { ethers } from "hardhat";
-import {
-  getDeploymentProperty,
-  ConfigProperty,
-} from "../../.deployment/deploymentManager";
+import { getDeploymentAddress } from "../../.deployment/deploymentManager";
 
 async function main() {
   const network = hre.network.name;
@@ -13,7 +10,7 @@ async function main() {
   // Get contract
   const storage = await ethers.getContractAt(
     "Storage",
-    getDeploymentProperty(network, ConfigProperty.Storage)
+    getDeploymentAddress(network, "Storage")
   );
 
   // Set data

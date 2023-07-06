@@ -1,49 +1,39 @@
-import fs from "fs";
+import { loadJSON, saveJSON } from "../utils/files";
 
-export enum ConfigProperty {
-  Storage = "storageAddress",
-}
+export const CONTRACT_NAMES = ["Storage"] as const;
+
+export type ContractName = (typeof CONTRACT_NAMES)[number];
 
 const getFilename = (network: string) => `${__dirname}/${network}.json`;
 
-const loadJSON = (network: string) => {
-  const filename = getFilename(network);
-  return fs.existsSync(filename) ? fs.readFileSync(filename).toString() : "{}";
-};
-
-const saveJSON = (network: string, json = "") => {
-  const filename = getFilename(network);
-  return fs.writeFileSync(filename, JSON.stringify(json, null, 2));
-};
-
-export const getDeploymentProperty = (
+export const getDeploymentAddress = (
   network: string,
-  property: ConfigProperty
+  contractName: ContractName
 ): string => {
-  const obj = JSON.parse(loadJSON(network));
-  return obj[property] || "Not found";
+  const obj = loadJSON(getFilename(network));
+  return obj[contractName] || "Not found";
 };
 
 export const getDeployment = (network: string) => {
-  const obj = JSON.parse(loadJSON(network));
+  const obj = loadJSON(getFilename(network));
   return obj || "Not found";
 };
 
-export const setDeploymentProperty = (
+export const setDeploymentAddress = (
   network: string,
-  property: ConfigProperty,
+  contractName: ContractName,
   value: string
 ) => {
-  const obj = JSON.parse(loadJSON(network) || "{}");
-  obj[property] = value;
-  saveJSON(network, obj);
+  const obj = loadJSON(getFilename(network));
+  obj[contractName] = value;
+  saveJSON(getFilename(network), obj);
 };
 
-export const removeDeploymentProperty = (
+export const removeDeploymentAddress = (
   network: string,
-  property: ConfigProperty
+  contractName: ContractName
 ) => {
-  const obj = JSON.parse(loadJSON(network) || "{}");
-  delete obj[property];
-  saveJSON(network, obj);
+  const obj = loadJSON(getFilename(network));
+  delete obj[contractName];
+  saveJSON(getFilename(network), obj);
 };
