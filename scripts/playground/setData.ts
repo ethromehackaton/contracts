@@ -1,5 +1,6 @@
 import hre, { ethers } from "hardhat";
 import { getDeploymentAddress } from "../../.deployment/deploymentManager";
+import uploadToIPFS from "../../utils/uploadToIpfs";
 
 async function main() {
   const network = hre.network.name;
@@ -13,8 +14,17 @@ async function main() {
     getDeploymentAddress(network, "Storage")
   );
 
+  // Upload to IPFS
+  const data = {
+    title: "Title",
+  };
+  const dataUri = await uploadToIPFS(data);
+  if (!dataUri) throw new Error("Failed to upload to IPFS");
+
+  console.log("Data Uri: ", dataUri);
+
   // Set data
-  const tx = await storage.connect(alice).setData("New data");
+  const tx = await storage.connect(alice).setData(dataUri);
   await tx.wait();
 
   console.log("Set new data");
