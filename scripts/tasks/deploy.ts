@@ -14,16 +14,27 @@ task("deploy", "Deploy all contracts")
     const balance = await ethers.provider.getBalance(deployer.address);
     console.log("Balance: ", ethers.utils.formatEther(balance));
 
-    const Storage = await ethers.getContractFactory("Storage");
-    const storageArgs: [string] = ["Initial message"];
-    const storage = await Storage.deploy(...storageArgs);
+    const GreatGrants = await ethers.getContractFactory("GreatGrants");
+    const greatGrants = await GreatGrants.deploy();
 
-    await storage.deployed();
+    await greatGrants.deployed();
 
-    if (verify) {
-      await verifyAddress(storage.address, storageArgs);
-    }
+    console.log(greatGrants)
 
-    console.log("Deployed Storage at", storage.address);
-    setDeploymentAddress(network.name, "Storage", storage.address);
+    console.log("Deployed  GreatGrants at", greatGrants.address);
+    
+    // const balance = await ethers.provider.getBalance(deployer.address);
+    // console.log("Balance: ", ethers.utils.formatEther(balance));
+
+    // const GreatGrants = await ethers.getContractFactory("GreatGrants");
+    // const greatGrants = await GreatGrants.deploy();
+
+    // await greatGrants.deployed();
+
+    // if (verify) {
+    //   await verifyAddress(greatGrants.address);
+    // }
+
+    // console.log("Deployed greatGrants at", greatGrants.address);
+    // setDeploymentAddress(network.name, "greatGrants", greatGrants.address);
   });

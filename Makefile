@@ -9,6 +9,9 @@ deploy:
 deploy-verify: 
 	npx hardhat deploy --verify --network $(NETWORK)
 
+deploy-mumbai: 
+	npx hardhat deploy --network mumbai
+
 #-------------- PLAYGROUND ----------------#
 
 set-data:

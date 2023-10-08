@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     mumbai: {
-      url: "https://matic-mumbai.chainstacklabs.com",
+      url: "https://rpc-mumbai.maticvigil.com",
       accounts,
     },
   },
